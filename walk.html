@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+        	canvas{
+        		border: 1px solid #000;
+        	}
+        </style>
+    </head>
+    <body>
+    <canvas id="canvas" width="600" height="400"></canvas>
+    <script>
+    	function toAngle(radian){
+    		return 180*radian/Math.PI;
+    	}
+    	function toRadian(angle){
+    		return Math.PI*angle/180;
+    	}
+    	var canvas=document.getElementById('canvas');
+    	var ctx=canvas.getContext("2d");
+    	var img=new Image();
+    	img.src='gameImgs/DMMbshuaiScout.png';
+    	var direction=0;
+    	var step=3;
+    	img.addEventListener('load',function(){
+    		ctx.drawImage(img,0,0,40,65,5,5,40,65);
+    		//当前帧
+    		var frame=0;
+    		var x=0;
+    		var y=0;
+    		window.setInterval(function(){
+    			frame=++frame%4;
+    			ctx.clearRect(0, 0, canvas.width, canvas.height);
+    			switch(direction){
+    				//up
+    				case 3:
+    				   y=y-step;
+    				   if(y<=-65){
+    				   	y=canvas.height+10;
+    				   }
+    				   break;
+
+    				   //down
+    				case 0:
+    				   y=y+step;
+    				   if(y>=canvas.height){
+    				   	 y=-65-10;
+    				   }
+    				   break;
+    				//left
+    				case 1:
+    				   x=x-step;
+    				   if(x<=-40){
+    				   	x=canvas.width+10;
+    				   }
+    				   break;
+
+    				//right
+    				case 2:
+    				  x=x+step;
+    				  if(x>=canvas.width){
+    				  	x=-40-10;
+    				  }
+    				  break;
+    			}
+    			//渲染图像
+    			ctx.drawImage(img,frame*40,direction*65,40,65,x,y,40,65);
+    		},200);
+    	});
+    	window.document.addEventListener('keydown',function(e){
+    		console.log(e.keyCode);
+    		switch(e.keyCode){
+    			//up
+    			case 87:
+    			case 38:
+    			   direction=3;
+    			   break;
+    			//down
+    			case 83:
+    			case 40:
+    			   direction=0;
+    			   break;
+    			//left
+    			case 65:
+    			case 37:
+    			   direction=1;
+    			   break;
+    			//right
+    			case 68:
+    			case 39:
+    			   direction=2;
+    			   break;
+    		}
+    	})
+    </script>
+    </body>
+</html>
